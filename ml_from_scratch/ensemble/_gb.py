@@ -1,9 +1,6 @@
 import numpy as np
 from ..tree import DecisionTreeRegressor
 
-import numpy as np
-from ..tree import DecisionTreeRegressor
-
 
 def _get_max_features(max_features, n_features):
     """
