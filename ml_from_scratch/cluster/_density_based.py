@@ -144,20 +144,25 @@ class DBSCAN:
         # Find neighbors for each point in the dataset
         neighbors = _find_neighbors(X=self._X, eps=self.eps)
         # Identify core points
-        core_ind = _find_core_points(neighbors=neighbors, min_samples=self.min_samples)
+        self.core_sample_indices = _find_core_points(
+            neighbors=neighbors, min_samples=self.min_samples
+        )
 
         # Initialize cluster assignments and visited points set
         self.assignment, self.visited = {}, set()
         next_cluster_id = 0  # ID for the next cluster
 
         # Expand clusters starting from each core point
-        for i in core_ind:
+        for i in self.core_sample_indices:
             if i in self.visited:
                 continue  # Skip if the point is already visited
 
             # Expand cluster from the current core point
             self._expand_cluster(
-                p=i, neighbors=neighbors, core_ind=core_ind, next_cluster_id=next_cluster_id
+                p=i,
+                neighbors=neighbors,
+                core_ind=self.core_sample_indices,
+                next_cluster_id=next_cluster_id,
             )
             self.visited.add(i)  # Mark the core point as visited
             next_cluster_id += 1  # Increment the cluster ID for the next cluster
@@ -172,7 +177,14 @@ class DBSCAN:
         if noise_cluster:
             self.assignment[-1] = noise_cluster
 
-    def _expand_cluster(self, p, neighbors, core_ind, next_cluster_id):
+        # Create an array of labels for each data points
+        self.labels_ = np.empty(shape=self._X.shape[0], dtype=int)
+
+        for class_key, indices in self.assignment.items():
+            for index in indices:
+                self.labels_[index] = class_key
+
+    def _expand_cluster(self, p: int, neighbors: list, core_ind, next_cluster_id: int):
         """
         Expand the cluster from a core point by recursively adding all directly density-reachable points to the cluster.
 
