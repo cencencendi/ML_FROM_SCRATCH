@@ -16,6 +16,7 @@ Welcome to the Machine Learning From Scratch repository! This project aims to pr
 - Bagging
 - AdaBoost
 - Gradient Boost
+- KMeans Clustering (Updated Feb 21, 2024)
 
 Each algorithm is implemented clearly, making it easy for learners and practitioners to grasp the fundamental principles of machine learning.
 
