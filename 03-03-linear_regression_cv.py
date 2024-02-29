@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from ml_from_scratch.model_selection import cross_val_score
+from ml_from_scratch.model_selection import cross_val_score, KFold
 from ml_from_scratch.linear_model import LinearRegression
 from ml_from_scratch.metrics import mean_squarred_error
 
@@ -24,12 +24,14 @@ cols_list = [
 mse_train_list = []
 mse_test_list = []
 
+cv = KFold(n_splits=5, shuffle=True, random_state=42)
+
 for cols in cols_list:
     mse_train_cols, mse_test_cols = cross_val_score(
         estimator=LinearRegression(),
         X=X[cols].to_numpy(),
         y=y.to_numpy(),
-        n_cv=5,
+        cv=cv,
         scoring="mean_squared_error",
     )
 
