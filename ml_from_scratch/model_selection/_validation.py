@@ -1,11 +1,10 @@
 import numpy as np
 import copy
 
-from ..model_selection import KFold
 from ..metrics import __all__
 
 
-def cross_val_score(estimator, X, y, n_cv=5, scoring="mean_squared_error"):
+def cross_val_score(estimator, X, y, cv, scoring="mean_squared_error"):
     """
     Perform cross-validated scoring for an estimator.
 
@@ -17,8 +16,8 @@ def cross_val_score(estimator, X, y, n_cv=5, scoring="mean_squared_error"):
         Input features.
     y : array-like or pd.Series
         Target values.
-    n_cv : int, optional
-        Number of cross-validation folds. Default is 5.
+    cv : cross-validation generator or an iterable.
+        Determines the cross-validation splitting strategy.
     scoring : str, optional
         The scoring metric to use. Default is "mean_squared_error".
 
@@ -31,9 +30,6 @@ def cross_val_score(estimator, X, y, n_cv=5, scoring="mean_squared_error"):
     X = np.array(X).copy()
     y = np.array(y).copy()
 
-    # Create KFold object for cross-validation
-    kf = KFold(n_splits=n_cv, shuffle=True, random_state=42)
-
     # Get the scoring function based on the provided metric
     scoring = __all__[scoring]
 
@@ -42,7 +38,7 @@ def cross_val_score(estimator, X, y, n_cv=5, scoring="mean_squared_error"):
     score_test_list = []
 
     # Perform cross-validation
-    for train_ids, test_ids in kf.split(X):
+    for train_ids, test_ids in cv.split(X):
         X_train, X_test = X[train_ids], X[test_ids]
         y_train, y_test = y[train_ids], y[test_ids]
 
