@@ -18,6 +18,8 @@ Welcome to the Machine Learning From Scratch repository! This project aims to pr
 - Gradient Boost
 - KMeans Clustering (Updated Feb 21, 2024)
 - DBSCAN Clustering (Updated Feb 21, 2024)
+- PCA (Updated Mar 5, 2024)
+- SVD (Updated Mar 5, 2024)
 
 Each algorithm is implemented clearly, making it easy for learners and practitioners to grasp the fundamental principles of machine learning.
 
